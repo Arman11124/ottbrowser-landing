@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OttBrowser - Бесплатные Фильмы и Сериалы</title>
+    <title>VibePlayer - Advanced Media Player for Android TV</title>
+    <meta name="description"
+        content="Modern media player for Android TV with HLS support, hardware acceleration, and minimalist UI.">
     <style>
         :root {
-            --primary: #E50914;
-            --dark: #141414;
+            --primary: #6C63FF;
+            --dark: #0f0f1a;
             --light: #ffffff;
+            --accent: #00D9FF;
         }
 
         body {
@@ -17,96 +20,148 @@
             padding: 0;
             background-color: var(--dark);
             color: var(--light);
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             overflow-x: hidden;
         }
 
         .hero {
             position: relative;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), #141414), url('assets/hero.png');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(108, 99, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 217, 255, 0.1) 0%, transparent 50%);
         }
 
         .content {
             text-align: center;
             z-index: 10;
             max-width: 800px;
-            padding: 20px;
+            padding: 40px 20px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: var(--accent);
+            margin-bottom: 2rem;
         }
 
         h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            color: #ccc;
+        .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
         }
 
         .btn {
             display: inline-block;
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
             padding: 1rem 3rem;
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.2rem;
+            font-weight: 600;
             text-decoration: none;
-            border-radius: 4px;
-            transition: transform 0.2s, background-color 0.2s;
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.5);
+            border-radius: 50px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 40px rgba(108, 99, 255, 0.4);
         }
 
         .btn:hover {
-            transform: scale(1.05);
-            background-color: #f40612;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(108, 99, 255, 0.6);
+        }
+
+        .version {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            opacity: 0.5;
         }
 
         .features {
-            padding: 4rem 2rem;
-            background: #141414;
+            padding: 5rem 2rem;
+            background: var(--dark);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         .feature-card {
-            background: #1f1f1f;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
             padding: 2rem;
-            border-radius: 8px;
+            border-radius: 16px;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
         }
 
         .feature-icon {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
-            color: var(--primary);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         footer {
             text-align: center;
-            padding: 2rem;
-            color: #666;
-            font-size: 0.9rem;
+            padding: 3rem 2rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            background: var(--dark);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Mobile responsive */
+        .disclaimer {
+            max-width: 600px;
+            margin: 0 auto 1rem;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
         @media (max-width: 768px) {
             h1 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
             }
 
-            p {
-                font-size: 1.1rem;
+            .subtitle {
+                font-size: 1rem;
             }
         }
     </style>
@@ -116,36 +171,42 @@
 
     <div class="hero">
         <div class="content">
-            <h1>Твой мир развлечений. Бесплатно.</h1>
-            <p>Фильмы, сериалы и ТВ-каналы в одном красивом приложении для Android TV.</p>
-            <!-- LINK TO LATEST RELEASE -->
-            <a href="OttBrowser-v2.2.apk" class="btn">Скачать APK</a>
-            <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.7;">
-                Версия 2.2.0 • TMDB прокси (Cloudflare)
-            </div>
+            <div class="logo">VIBEPLAYER</div>
+            <h1>Advanced Media Player for Android TV</h1>
+            <p class="subtitle">
+                Stream your media library with HLS support, hardware acceleration,
+                and a beautiful minimalist interface designed for big screens.
+            </p>
+            <!-- LINK TO CLOUDFLARE R2 (TODO: Update after R2 upload) -->
+            <a href="OttBrowser-v2.2.apk" class="btn">Download APK</a>
+            <div class="version">Version 2.2.0 • Android TV</div>
         </div>
     </div>
 
     <div class="features">
         <div class="feature-card">
             <div class="feature-icon">📺</div>
-            <h3>Для Android TV</h3>
-            <p>Разработано специально для больших экранов и управления пультом.</p>
+            <h3>Android TV Optimized</h3>
+            <p>Built specifically for large screens with intuitive remote control navigation.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon">⚡</div>
-            <h3>Без настройки</h3>
-            <p>Просто установи и смотри. Никаких сложных настроек.</p>
+            <h3>HLS & Hardware Decode</h3>
+            <p>Native HLS streaming support with hardware acceleration for smooth 4K playback.</p>
         </div>
         <div class="feature-card">
-            <div class="feature-icon">🍿</div>
-            <h3>Безлимитный контент</h3>
-            <p>Доступ к тысячам фильмов и сериалов мгновенно.</p>
+            <div class="feature-icon">🎨</div>
+            <h3>Minimalist Interface</h3>
+            <p>Clean, distraction-free UI that puts your content front and center.</p>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 OttBrowser. Сделано на React Native.</p>
+        <p class="disclaimer">
+            This application does not contain any content.
+            Users must provide their own media sources and playlists.
+        </p>
+        <p>&copy; 2026 VibePlayer. Open source media player.</p>
     </footer>
 
 </body>
